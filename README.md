@@ -1,2 +1,2 @@
 # Price-Estimation
-Use machine learning predict the value of home prices 
+Predict US House Prices by using Neural Network
