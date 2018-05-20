@@ -3,7 +3,7 @@ Predict different prices using different techniques.
 
 ## Requirements
 
-pip install -r requirements
+''' pip install -r requirements '''
 
 
 ## Soution 1
