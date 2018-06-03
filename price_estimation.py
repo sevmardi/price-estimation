@@ -161,3 +161,23 @@ print("Tuned Ridge Alpha: {}".format(gm_cv.best_params_))
 print("Tuned Ridge R squared: {0:.4f}".format(r2))
 
 
+# Custom function to plot the hyperparameters against the cross validated scores
+def display_plot(cv_scores, cv_scores_std):
+	fig = plit.figure()
+	ax = fig.add_subplot(1,1,1)
+	ax.plot(alpha_space, cv_scores)
+
+	std_error = cv_scores / np.sqrt(10)
+
+	ax.fill_between(alpha_space, cv_scores + std_error, cv_scores - std_error, alpha=0.2)
+	ax.set_ylabel('CV Score +/- Std Error')
+	ax.set_xlabel('Alpha')
+	ax.axhline(np.max(cv_scores), linestyle='--', color='.5')
+	ax.set_xlim([alpha_space[0], alpha_space[-1]])
+	ax.set_xscale('log')
+	plt.savefig('display_plot.png')
+	# plt.show()
+
+# Plotting the hyperparameters against the cross validated scores
+
+
