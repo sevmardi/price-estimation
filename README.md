@@ -1,4 +1,4 @@
-# Price-Estimation
+# Price Estimation
 Predict different prices using different techniques.
 
 ## Requirements
