@@ -179,5 +179,68 @@ def display_plot(cv_scores, cv_scores_std):
 	# plt.show()
 
 # Plotting the hyperparameters against the cross validated scores
+scaler = MinMaxScaler()
+scaler.fit(X_test)
+X_test_scaled = scaler.transform(X_test)
+
+# Setup the array of alphas and lists to store scores
+alpha_space = np.logspace(-4, 0, 50)
+ridge_scores = []
+ridge_scores_std = []
+
+# Create a ridge regressor: ridge
+ridge = Ridge(normalize=True,tol=0.1)
+
+for alpha in alpha_space:
+    # Specify the alpha value to use: ridge.alpha
+    ridge.alpha = alpha
+    # Perform 10-fold CV: ridge_cv_scores
+    ridge_cv_scores = cross_val_score(ridge,X_test_scaled,y_test,cv=10)
+    # Append the mean of ridge_cv_scores to ridge_scores
+    ridge_scores.append(np.mean(ridge_cv_scores))
+    # Append the std of ridge_cv_scores to ridge_scores_std
+    ridge_scores_std.append(np.std(ridge_cv_scores))
+
+#display the plot
+display_plot(ridge_scores, ridge_scores_std)
+
+
+# Polynomial Ridge Regression
+ridge = Ridge(alpha = gm_cv.best_params_['Ridge__alpha'],normalize=True,tol=0.1)
+
+#clf indicates the model on which to run polynomial regression
+clf = ridge
+
+polyreg()
+
+
+# LASSO Regression
+
+# Setup the pipeline steps: steps
+steps = [('scaler', MinMaxScaler()),
+         ('Lasso', Lasso(tol=0.1))]
+
+
+# Create the pipeline: pipeline 
+pipeline = Pipeline(steps)
+
+# Specify the hyperparameter space
+parameters = {'Lasso__alpha': np.logspace(-4, 3, 50)}
+
+# Create the GridSearchCV object: gm_cv
+gm_cv = GridSearchCV(pipeline,param_grid=parameters,cv=5)
+
+# Fit to the training set
+gm_cv.fit(X_train,y_train)
+
+
+# Compute and print the metrics
+r2 = gm_cv.score(X_test, y_test)
+print("Tuned Lasso L1 penalty: {}".format(gm_cv.best_params_))
+print("Tuned Lasso R squared: {0:.4f}".format(r2))
+
+
+
+# Plotting the hyperparameters against the cross validated scores
 
 
